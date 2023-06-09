@@ -1,0 +1,51 @@
+﻿@model IEnumerable<InstituteOfFineArts.Models.Competition>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row">
+    <div class=" bg-danger"><h3 style="padding-left:20px"> Competition </h3></div>
+    @foreach (var item in Model)
+    {
+        <div class="col-md-3 col-sm-6">
+            <a>
+
+            </a>
+            <center>
+                <h3>@Html.DisplayFor(modelItem => item.Name)</h3>
+                <a style="color:red">@Html.DisplayFor(modelItem => item.StartDate)</a> - <a style="color:red">@Html.DisplayFor(modelItem => item.EndDate)</a> <br />
+                <a>
+                    @if (item.Status == 0)
+                    {
+                        @Html.DisplayName("Upcoming");
+                    }
+                    else if (item.Status == 1)
+                    {
+                        @Html.DisplayName("Now");
+                    }
+                    else
+                    {
+                        @Html.DisplayName("Expires");
+                    }
+                </a>
+                <br />
+                @if (item.Status == 1)
+                {
+                    using (Html.BeginForm("", ""))
+                    {
+
+                    }
+                    @Html.ActionLink("Details", "Details", new { id = item.CompetitionId })
+                }
+                else
+                {
+                    @Html.ActionLink("Details", "Details", new { id = item.CompetitionId })
+                }
+
+
+                @*<h4> <a href="@Url.Action("xemchitiet", new {@Masp=item.Masp })">Xem chi tiết</a></h4>*@
+            </center>
+
+        </div>}

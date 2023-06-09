@@ -1,0 +1,40 @@
+﻿@model IEnumerable<InstituteOfFineArts.Models.Desigin>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row">
+    <div class=" bg-danger"><h3 style="padding-left:20px"> Designs </h3></div>
+    @foreach (var item in Model)
+    {
+        <div class="col-md-3 col-sm-6">
+            <a>
+
+            </a>
+            <center>
+                <img src="@item.Path" style="height:100px ; width:100px " />
+                <h3>@Html.DisplayFor(modelItem => item.Name)</h3>
+
+                <a>
+                    @if (item.Status == 0)
+                    {
+                        @Html.DisplayName("Available");
+                    }
+
+                    else
+                    {
+                        @Html.DisplayName("Sold Out");
+                    }
+                </a>
+                <br />
+                <a>@item.Price</a>
+                <h4>
+                    @Html.ActionLink("Details", "Details", new { id = item.DesiginId })
+                            </h4>
+                @*<h4> <a href="@Url.Action("xemchitiet", new {@Masp=item.Masp })">Xem chi tiết</a></h4>*@
+            </center>
+
+        </div>}
+    </div>
