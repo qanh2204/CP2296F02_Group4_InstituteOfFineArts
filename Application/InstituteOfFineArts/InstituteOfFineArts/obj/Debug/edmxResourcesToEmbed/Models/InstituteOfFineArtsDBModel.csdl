@@ -1,0 +1,146 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="InstituteOfFineArtsDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="Competition">
+    <Key>
+      <PropertyRef Name="CompetitionId" />
+    </Key>
+    <Property Name="CompetitionId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="Detail" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="StartDate" Type="DateTime" Precision="0" />
+    <Property Name="EndDate" Type="DateTime" Precision="0" />
+    <Property Name="Status" Type="Int32" />
+    <Property Name="RewardId" Type="Int32" />
+    <NavigationProperty Name="Reward" Relationship="Self.FK_Competition_Reward" FromRole="Competition" ToRole="Reward" />
+    <NavigationProperty Name="Desigins" Relationship="Self.FK_Desigin_Competition" FromRole="Competition" ToRole="Desigin" />
+  </EntityType>
+  <EntityType Name="Reward">
+    <Key>
+      <PropertyRef Name="RewardId" />
+    </Key>
+    <Property Name="RewardId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Detail" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="Price" Type="Double" />
+    <NavigationProperty Name="Competitions" Relationship="Self.FK_Competition_Reward" FromRole="Reward" ToRole="Competition" />
+    <NavigationProperty Name="Desigins" Relationship="Self.FK_Desigin_Reward" FromRole="Reward" ToRole="Desigin" />
+  </EntityType>
+  <EntityType Name="sysdiagram">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="principal_id" Type="Int32" Nullable="false" />
+    <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="version" Type="Int32" />
+    <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+  </EntityType>
+  <EntityType Name="Desigin">
+    <Key>
+      <PropertyRef Name="DesiginId" />
+    </Key>
+    <Property Name="DesiginId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Path" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="Name" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="Topic" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Date" Type="DateTime" Precision="0" />
+    <Property Name="Mark" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="Remark" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+    <Property Name="Exhibition" Type="Int32" />
+    <Property Name="Status" Type="Int32" />
+    <Property Name="UserId" Type="Int32" />
+    <Property Name="CompetitionId" Type="Int32" />
+    <Property Name="RewardId" Type="Int32" />
+    <Property Name="Price" Type="Double" />
+    <NavigationProperty Name="Competition" Relationship="Self.FK_Desigin_Competition" FromRole="Desigin" ToRole="Competition" />
+    <NavigationProperty Name="Reward" Relationship="Self.FK_Desigin_Reward" FromRole="Desigin" ToRole="Reward" />
+    <NavigationProperty Name="User" Relationship="InstituteOfFineArtsDBModel.FK_Desigin_User" FromRole="Desigin" ToRole="User" />
+  </EntityType>
+  <Association Name="FK_Competition_Reward">
+    <End Role="Reward" Type="Self.Reward" Multiplicity="0..1" />
+    <End Role="Competition" Type="Self.Competition" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Reward">
+        <PropertyRef Name="RewardId" />
+      </Principal>
+      <Dependent Role="Competition">
+        <PropertyRef Name="RewardId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Desigin_Competition">
+    <End Role="Competition" Type="Self.Competition" Multiplicity="0..1" />
+    <End Role="Desigin" Type="Self.Desigin" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Competition">
+        <PropertyRef Name="CompetitionId" />
+      </Principal>
+      <Dependent Role="Desigin">
+        <PropertyRef Name="CompetitionId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Desigin_Reward">
+    <End Role="Reward" Type="Self.Reward" Multiplicity="0..1" />
+    <End Role="Desigin" Type="Self.Desigin" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Reward">
+        <PropertyRef Name="RewardId" />
+      </Principal>
+      <Dependent Role="Desigin">
+        <PropertyRef Name="RewardId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="InstituteOfFineArtsDBEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Competitions" EntityType="Self.Competition" />
+    <EntitySet Name="Rewards" EntityType="Self.Reward" />
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
+    <EntitySet Name="Desigins" EntityType="Self.Desigin" />
+    <AssociationSet Name="FK_Competition_Reward" Association="Self.FK_Competition_Reward">
+      <End Role="Reward" EntitySet="Rewards" />
+      <End Role="Competition" EntitySet="Competitions" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Desigin_Competition" Association="Self.FK_Desigin_Competition">
+      <End Role="Competition" EntitySet="Competitions" />
+      <End Role="Desigin" EntitySet="Desigins" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Desigin_Reward" Association="Self.FK_Desigin_Reward">
+      <End Role="Reward" EntitySet="Rewards" />
+      <End Role="Desigin" EntitySet="Desigins" />
+    </AssociationSet>
+    <EntitySet Name="Users" EntityType="InstituteOfFineArtsDBModel.User" />
+    <AssociationSet Name="FK_Desigin_User" Association="InstituteOfFineArtsDBModel.FK_Desigin_User">
+      <End Role="User" EntitySet="Users" />
+      <End Role="Desigin" EntitySet="Desigins" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="User">
+    <Key>
+      <PropertyRef Name="UserId" />
+    </Key>
+    <Property Name="UserId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="FullName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Gender" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Address" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Phone" Type="Int64" />
+    <Property Name="Username" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="UserType" Type="Int32" />
+    <NavigationProperty Name="Desigins" Relationship="InstituteOfFineArtsDBModel.FK_Desigin_User" FromRole="User" ToRole="Desigin" />
+  </EntityType>
+  <Association Name="FK_Desigin_User">
+    <End Type="InstituteOfFineArtsDBModel.User" Role="User" Multiplicity="0..1" />
+    <End Type="InstituteOfFineArtsDBModel.Desigin" Role="Desigin" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="UserId" />
+      </Principal>
+      <Dependent Role="Desigin">
+        <PropertyRef Name="UserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema>

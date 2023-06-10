@@ -1,0 +1,138 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="InstituteOfFineArtsDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="Competition">
+    <Key>
+      <PropertyRef Name="CompetitionId" />
+    </Key>
+    <Property Name="CompetitionId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar" MaxLength="200" />
+    <Property Name="Detail" Type="nvarchar(max)" />
+    <Property Name="StartDate" Type="date" />
+    <Property Name="EndDate" Type="date" />
+    <Property Name="Status" Type="int" />
+    <Property Name="RewardId" Type="int" />
+  </EntityType>
+  <EntityType Name="Desigin">
+    <Key>
+      <PropertyRef Name="DesiginId" />
+    </Key>
+    <Property Name="DesiginId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Path" Type="varchar" MaxLength="200" />
+    <Property Name="Name" Type="nvarchar" MaxLength="200" />
+    <Property Name="Topic" Type="nvarchar" MaxLength="50" />
+    <Property Name="Description" Type="nvarchar(max)" />
+    <Property Name="Date" Type="date" />
+    <Property Name="Mark" Type="nvarchar" MaxLength="10" />
+    <Property Name="Remark" Type="nchar" MaxLength="10" />
+    <Property Name="Exhibition" Type="int" />
+    <Property Name="Status" Type="int" />
+    <Property Name="UserId" Type="int" />
+    <Property Name="CompetitionId" Type="int" />
+    <Property Name="RewardId" Type="int" />
+    <Property Name="Price" Type="float" />
+  </EntityType>
+  <EntityType Name="Reward">
+    <Key>
+      <PropertyRef Name="RewardId" />
+    </Key>
+    <Property Name="RewardId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar" MaxLength="50" />
+    <Property Name="Detail" Type="nvarchar" MaxLength="200" />
+    <Property Name="Price" Type="float" />
+  </EntityType>
+  <EntityType Name="sysdiagrams">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+    <Property Name="principal_id" Type="int" Nullable="false" />
+    <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="version" Type="int" />
+    <Property Name="definition" Type="varbinary(max)" />
+  </EntityType>
+  <EntityType Name="User">
+    <Key>
+      <PropertyRef Name="UserId" />
+    </Key>
+    <Property Name="UserId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="FullName" Type="nvarchar" MaxLength="50" />
+    <Property Name="Gender" Type="nvarchar" MaxLength="50" />
+    <Property Name="Address" Type="nvarchar" MaxLength="200" />
+    <Property Name="Email" Type="nvarchar" MaxLength="50" />
+    <Property Name="Phone" Type="bigint" />
+    <Property Name="Username" Type="nvarchar" MaxLength="50" />
+    <Property Name="Password" Type="nvarchar" MaxLength="50" />
+    <Property Name="UserType" Type="int" />
+  </EntityType>
+  <Association Name="FK_Competition_Reward">
+    <End Role="Reward" Type="Self.Reward" Multiplicity="0..1" />
+    <End Role="Competition" Type="Self.Competition" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Reward">
+        <PropertyRef Name="RewardId" />
+      </Principal>
+      <Dependent Role="Competition">
+        <PropertyRef Name="RewardId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Desigin_Competition">
+    <End Role="Competition" Type="Self.Competition" Multiplicity="0..1" />
+    <End Role="Desigin" Type="Self.Desigin" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Competition">
+        <PropertyRef Name="CompetitionId" />
+      </Principal>
+      <Dependent Role="Desigin">
+        <PropertyRef Name="CompetitionId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Desigin_Reward">
+    <End Role="Reward" Type="Self.Reward" Multiplicity="0..1" />
+    <End Role="Desigin" Type="Self.Desigin" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Reward">
+        <PropertyRef Name="RewardId" />
+      </Principal>
+      <Dependent Role="Desigin">
+        <PropertyRef Name="RewardId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Desigin_User">
+    <End Role="User" Type="Self.User" Multiplicity="0..1" />
+    <End Role="Desigin" Type="Self.Desigin" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="UserId" />
+      </Principal>
+      <Dependent Role="Desigin">
+        <PropertyRef Name="UserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="InstituteOfFineArtsDBModelStoreContainer">
+    <EntitySet Name="Competition" EntityType="Self.Competition" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Desigin" EntityType="Self.Desigin" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Reward" EntityType="Self.Reward" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK_Competition_Reward" Association="Self.FK_Competition_Reward">
+      <End Role="Reward" EntitySet="Reward" />
+      <End Role="Competition" EntitySet="Competition" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Desigin_Competition" Association="Self.FK_Desigin_Competition">
+      <End Role="Competition" EntitySet="Competition" />
+      <End Role="Desigin" EntitySet="Desigin" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Desigin_Reward" Association="Self.FK_Desigin_Reward">
+      <End Role="Reward" EntitySet="Reward" />
+      <End Role="Desigin" EntitySet="Desigin" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Desigin_User" Association="Self.FK_Desigin_User">
+      <End Role="User" EntitySet="User" />
+      <End Role="Desigin" EntitySet="Desigin" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
